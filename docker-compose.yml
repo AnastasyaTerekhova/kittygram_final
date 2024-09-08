@@ -25,7 +25,7 @@ services:
     volumes:
       - static:/frontend_static
   gateway:
-    build: ./nginx/
+    image: anastasia130/kittygram_gateway
     env_file: .env
     ports:
       - 9000:80
