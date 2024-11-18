@@ -1,26 +1,38 @@
-#  Как работать с репозиторием финального задания
+# kittygram
+Сайт, куда можно выкладывать фотки котиков и их достижения. Бэкенд написан на Django. Проект предназначен для того, чтобы познакомится с Docker (проект упакован в контейнеры) и научится настраивать CI/CD
 
-## Что нужно сделать
-
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
-
-## Как проверить работу с помощью автотестов
-
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+# Как подключить:
+Клонировать репозиторий и перейти в него в командной строке:
+```bash
+git clone https://github.com/AnastasyaTerekhova/kittygram_final.git
+cd kittygram_final/backend
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+В локальной папке проекта создать и активировать виртуальное окружение:
+```bash
+# Команды для Windows:
+python -m venv env
+source env/Scripts/activate
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+# Команды для Linux и macOS:
+python3 -m venv env
+source env/bin/activate
+```
 
-## Чек-лист для проверки перед отправкой задания
+Обновить пакетный менеджер:
+```bash
+python -m pip install --upgrade pip
+```
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+Установить зависимости из файла requirements.txt:
+```bash
+pip install -r requirements.txt
+```
+
+Выполнить команды:
+```bash
+cd kittygram_final
+docker compose up -d
+docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py collectstatic
+docker compose exec backend cp -r /app/collected_static/. /static/
